@@ -18,7 +18,7 @@ autoregressive error model can be applied to the data using a maximum
 likelihood approach. The data model in this context is represented as:
 $$\mathbf{Y} = \alpha + \beta \mathbf{x} + \varepsilon$$ Here, $Y$ is
 the outcome variable, $x$ is the variable of interest (both column
-vectors),$\alpha$ and $\beta$ are regression coefficients, and
+vectors), $\alpha$ and $\beta$ are regression coefficients, and
 $\varepsilon$ is the random error term. However, instead of assuming
 that $\varepsilon$ consists of independent errors, we posit that:
 $$\varepsilon = \lambda \mathbf{W} \varepsilon + \zeta$$ where
