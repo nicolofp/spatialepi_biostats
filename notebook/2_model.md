@@ -97,3 +97,16 @@ include area for physical processes, or population size for disease
 applications). If we specify a proper CAR prior for $\varphi$, then we
 have that $\varphi \sim \text{N}(0, [\tau (D - \alpha W)]^{-1})$ where
 $\tau (D - \alpha W)$ is the precision matrix $\Sigma^{-1}$.
+
+## References
+
++ [SVR via STAN, Chris Brunsdon](https://rpubs.com/chrisbrunsdon/503833)
++ [Conditional autoregressive (CAR) models, Connor Donegan](https://connordonegan.github.io/geostan/reference/stan_car.html)
++ [Geostatistical modelling with R and Stan, Sam Watson](https://aheblog.com/2016/12/07/geostatistical-modelling-with-r-and-stan/)
++ [STAN-IAR, Connor Donegan](https://github.com/ConnorDonegan/Stan-IAR)
++ [Spatial Models in Stan: Intrinsic Auto-Regressive Models for Areal Data, Mitzi Morris](https://mc-stan.org/users/documentation/case-studies/icar_stan.html#bym2-improving-the-parameterization-of-the-besag-york-and-mollie-model)
++ [Exact sparse CAR models in Stan, Max Joseph](https://mc-stan.org/users/documentation/case-studies/mbjoseph-CARStan.html)
+
+
+
+
