@@ -42,7 +42,7 @@ written $A$ for adjacency, or $W$ for weights. In the context of binary
 neighbor relationships, denoted as $W_{ij}$ is zero if counties $i$ and
 $j$ are not contiguous, and $1$ if they are. In the case of **CAR**
 models, the neighbor relationship is symmetric but not reflexive,
-i.e. $W_{ij} = 0$ if counties $i = j$.
+i.e. $W_{ij} = 0$ if counties $i = j$.
 
 Given a set of observations taken at $N$ different areal units of a
 region, spatial interactions between a pair of units $i$ and $j$ can be
@@ -66,17 +66,17 @@ are assuming the following:
 - $D_\tau = \tau D$
 - $D=diag(m_i)$: an $n \times n$ diagonal matrix with $m_i$ = the number
   of neighbors for location $i$
-- \$ \$: an $n \times n$ identity matrix
+- $\mathbb{I}$: an $n \times n$ identity matrix
 - $\alpha$: a parameter that controls spatial dependence ($\alpha = 0$
-  implies spatial independence, and $alpha = 1$ collapses to an
+  implies spatial independence, and $\alpha = 1$ collapses to an
   *intrinsic conditional autoregressive* specification)
 - $B=D^{−1}W$: the scaled adjacency matrix
-- $W$: the adjacency matrix ($w_{ii}=0$,$w_{ij} = 1$ if $i$ is a
+- $W$: the adjacency matrix ($w_{ii}=0$, $w_{ij} = 1$ if $i$ is a
   neighbor of $j$, and $w_{ij}=0$ otherwise)
 
 Then the model simplified is:
 
-$$\varphi \sim N(0, [\tau (D - \alpha W)]^{-1})$$ The $alpha$ parameter
+$$\varphi \sim N(0, [\tau (D - \alpha W)]^{-1})$$ The $\alpha$ parameter
 ensures propriety of the joint distribution of $\varphi$ as long as
 $|\alpha| < 1$ (Gelfand & Vounatsou 2003). However, $\alpha$ is often
 taken as $1$, leading to the *IAR* specification which creates a
