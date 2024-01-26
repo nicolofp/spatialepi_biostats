@@ -14,7 +14,7 @@ district_nb = nb2mat(district_nb)
 A = rowSums(district_nb != 0) * district_nb 
 
 check_cmdstan_toolchain(fix = TRUE)
-file = "stan/spatial_regression.stan"
+file = "stan/sp_poisson_regression.stan"
 mod = cmdstan_model(file)
 
 dt = merge(DT_health, pollution,
@@ -25,16 +25,16 @@ dt = merge(DT_health, pollution,
 pollutants = names(dt)[8:38]
 # tmp_res = lapply(pollutants, function(i){
 #   x = as.matrix(pollution[,c(i),with=F])
-#   W = A 
+#   W = A
 #   X = apply(x,2,scale)
-#   
+# 
 #   full_d = list(n = NROW(dt),                                 # number of observations
 #                 p = 1,                                        # number of coefficients
 #                 X = X,                                        # design matrix
 #                 y = dt$ratio,                                 # observed number of cases
 #                 log_offset = log(rep(13,NROW(dt))),           # log(expected) num. cases
 #                 W = A)                                        # adjacency matrix
-#   
+# 
 #   fit = mod$sample(
 #     data = full_d,
 #     chains = 4,
@@ -45,12 +45,12 @@ pollutants = names(dt)[8:38]
 #     refresh = 100,
 #     max_treedepth = 20
 #   )
-#   
+# 
 #   return(fit)
 # })
-# saveRDS(tmp_res,"src/results.rds")
+saveRDS(tmp_res,"src/results_sp.rds")
 
-fit = readRDS("src/results.rds")
+fit = readRDS("src/results_sp.rds")
 results_table = lapply(1:NROW(pollutants),function(i){
   qtl10 = quantile(fit[[i]]$draws("beta"),c(0.1))
   qtl90 = quantile(fit[[i]]$draws("beta"),c(0.9))
