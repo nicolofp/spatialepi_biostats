@@ -1,7 +1,9 @@
 ---
 title: "GeoHealth"
 date: "`r weekdays(Sys.Date())`, `r as.numeric(format(Sys.Date(),'%d'))`^`r ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(1,21,31),'st',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(2,22),'nd',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(3,23),'rd','th')))`^ `r format(Sys.Date(),'%B %Y')`"
-output: github_document
+output:
+  github_document:
+    html_preview: false
 ---
 
 ## Introduction

@@ -1,2 +1,0 @@
-municipalities.arrow - Italian municipalities with ISTAT code, Name, Lat, Long
-inemar.arrow - INEMAR estimates for pullutants produced per year (2019)

@@ -1,5 +1,10 @@
-Spatial Modelling using STAN
-================
+---
+title: "Spatial Modeling using STAN"
+date: "`r weekdays(Sys.Date())`, `r as.numeric(format(Sys.Date(),'%d'))`^`r ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(1,21,31),'st',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(2,22),'nd',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(3,23),'rd','th')))`^ `r format(Sys.Date(),'%B %Y')`"
+output:
+  github_document:
+    html_preview: false
+---
 
 ## Introduction
 
@@ -106,7 +111,3 @@ $\tau (D - \alpha W)$ is the precision matrix $\Sigma^{-1}$.
 + [STAN-IAR, Connor Donegan](https://github.com/ConnorDonegan/Stan-IAR)
 + [Spatial Models in Stan: Intrinsic Auto-Regressive Models for Areal Data, Mitzi Morris](https://mc-stan.org/users/documentation/case-studies/icar_stan.html#bym2-improving-the-parameterization-of-the-besag-york-and-mollie-model)
 + [Exact sparse CAR models in Stan, Max Joseph](https://mc-stan.org/users/documentation/case-studies/mbjoseph-CARStan.html)
-
-
-
-
