@@ -60,47 +60,13 @@ DT |>
 dbGetQuery(duckdb_con, "SELECT Count(DISTINCT data) AS Ndays FROM test;")
 
 pfas = fread("C:/Users/nicol/Documents/full.csv")
-pfas[country == "Italy" & !is.na(pfas_sum) & source_text == "ARPA Lombardia" & matrix == "Groundwater"]
+pfas_lomb = pfas[country == "Italy" & 
+                   !is.na(pfas_sum) & 
+                   source_text == "ARPA Lombardia" & 
+                   matrix == "Groundwater"]
 
-
-
-
-R = fread("https://www.dati.lombardia.it/resource/fwpe-xzv8.csv?$limit=5000000")
-G = fread("https://www.dati.lombardia.it/resource/6n7g-5p5e.csv")
-
-length(unique(E$codice_ente))
-length(unique(R$codice_ente))
-base::intersect(unique(R$codice_ente),
-                unique(E$codice_ente))
-
-outersect <- function(x, y, ...) {
-  big.vec <- c(x, y, ...)
-  duplicates <- big.vec[duplicated(big.vec)]
-  setdiff(big.vec, unique(duplicates))
-}
-
-outersect(unique(R$codice_ente),
-          unique(E$codice_ente))
-
-
-
-library(data.table)
-library(sf)
-library(sp)
-library(geojson)
-library(geojsonsf)
-
-shape = read_sf(dsn = "C:/Users/nicol/Documents/WQ_Lombardia/SQA_GW_download_2021/SQA_GW_downloadPoint.shp")
-shape = read_sf(dsn = "C:/Users/nicol/Downloads/SQA_GW_download/SQA_GW_downloadPoint.shp")
-tmp = st_transform(shape, crs = 4326)
-
-tmp = data.table(tmp)
-tmp_cast = dcast(tmp, cod_Staz ~ sostanza, value.var = "conc_media")
-
-summary(tmp_cast)
-
-
-
-
+tmp1 = gsub('\"',"",pfas_lomb$pfas_values[1])
+tmp1 = unlist(strsplit(tmp1,split = "\\},"))
+tmp1 = gsub("\\{|\\[|\\]|\\}","",tmp1) 
 
 

@@ -20,3 +20,11 @@ map_point = function(space, dt_point, out_name){
   return(dt_point)
 }
 
+# Find the elements that are not in common
+# between 2 (or more) vectors
+
+outersect = function(x, y, ...) {
+  big_vec = c(x, y, ...)
+  duplicates = big_vec[duplicated(big_vec)]
+  setdiff(big_vec, unique(duplicates))
+}
