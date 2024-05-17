@@ -1,22 +1,21 @@
 ---
 title: "Data Visualization"
 date: "`r weekdays(Sys.Date())`, `r as.numeric(format(Sys.Date(),'%d'))`^`r ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(1,21,31),'st',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(2,22),'nd',ifelse(as.numeric(format(Sys.Date(), '%d')) %in% c(3,23),'rd','th')))`^ `r format(Sys.Date(),'%B %Y')`"
-output:
-  github_document:
-    html_preview: false
+output: html_document
 ---
 
 ## Introduction
 
 ```{r}
-knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/',
-                      fig.align = 'center')
+knitr::opts_chunk$set(fig.align = 'center',
+                      echo = F)
 
 library(data.table)
 library(geojsonio)
 library(ggplot2)
 library(viridis)
 library(duckdb)
+library(plotly)
 library(arrow)
 library(broom)
 library(sp)
@@ -62,7 +61,7 @@ dt_district = merge(dt_district,WC, by.x = "id", by.y = "district_id")
 
 ```
 
-```{r}
+```{r, fig.height=6, fig.width=8}
 map_lomb = ggplot() +
   geom_polygon(data = dt_district, aes(x = long, y = lat, 
                                           group = group, fill = valore_numerico), 
@@ -70,9 +69,13 @@ map_lomb = ggplot() +
   theme_void() +
   scale_fill_viridis() +
   coord_map() + 
-  labs(title = "Solfati emission 2019",
-       subtitle = "mg/L",
-       caption = "data: Arpa 2019")
-map_lomb
+  labs(title = "Solfati ground water 2019",
+       subtitle = "unit measure: mg/L",
+       caption = "data: ArpaLombardia 2019") +
+  theme(plot.title = element_text(hjust = 0.5,size = 18),
+        plot.subtitle = element_text(hjust = 0.5,size = 15),
+        legend.position="none") 
+  
+ggplotly(map_lomb)
 ```
 

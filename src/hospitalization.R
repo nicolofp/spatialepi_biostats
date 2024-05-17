@@ -48,6 +48,10 @@ DTh = Reduce(function(...) merge(..., all = TRUE, by = c("latitudine_norm",
              list(h,eh,hh,lh))
 setnames(DTh,c("latitudine_norm","longitudine_norm"), c("lat","lng"))
 DTh = map_point(district, DTh, "district_id")
+DTh = DTh[,.(h_all = sum(h_all,na.rm = T),
+             h_endo = sum(h_endo,na.rm = T),
+             h_heart = sum(h_heart,na.rm = T),
+             h_lungs = sum(h_lungs,na.rm = T)), by = district_id]
 
 # Water quality
 library(data.table)
@@ -83,8 +87,16 @@ WC[, lng := unlist(WC$lng)]
 WC = map_point(district, WC, "district_id")
 WC[, valore_numerico := as.numeric(gsub(",",".",valore_numerico))]
 
-WC[parametro %in% metals,.N, by = .(parametro,segno)]
+WC[, valore_numerico := ifelse(segno == "<", 
+                               valore_numerico/sqrt(2), valore_numerico)]
 
-View(WC[,.N,by = .(parametro,segno)][segno == ""])
-#DDT totale (DM 6 luglio 2016)
+WC = WC[parametro %in% c("Manganese","Piombo","Solfati")
+   ,.(valore_numerico = mean(valore_numerico,na.rm=T)), by = .(parametro,district_id)]
+
+wq = dcast(WC, district_id ~ parametro)
+
+
+
+
+
 
