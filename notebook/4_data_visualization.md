@@ -5,6 +5,7 @@ Friday, 17<sup>th</sup> May 2024
 ## Introduction
 
 ``` r
+knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/')
 library(data.table)
 library(geojsonio)
 library(ggplot2)
@@ -72,4 +73,4 @@ map_lomb = ggplot() +
 map_lomb
 ```
 
-<img src="C:/Users/nicol/Documents/Github_projects/spatialepi_biostats/notebook/4_data_visualization_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="../notebook/4_data_visualization_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />

@@ -9,6 +9,7 @@ output:
 ## Introduction
 
 ```{r}
+knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/')
 library(data.table)
 library(geojsonio)
 library(ggplot2)
