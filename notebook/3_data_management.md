@@ -1,6 +1,6 @@
 Data Management
 ================
-Wednesday, 15<sup>th</sup> May 2024
+Friday, 17<sup>th</sup> May 2024
 
 ## Introduction
 
@@ -27,6 +27,8 @@ streamlined and efficient workflow
 
 - **Water quality**: historical data from *ISPRA* →
   [here](https://sinacloud.isprambiente.it/portal/apps/sites/?fromEdit=true#/portalepesticidi/pages/area-download)
+- **Water human usage**: water for human usage →
+  [here](https://www.dati.lombardia.it/resource/beda-kb7b.csv)
 - **Air quality**: the air quality data are available as *APIs* from
   *Regione Lombardia* website. The dataset has different tables which
   need to be combined based on the data needs. Note that the APIs have
@@ -61,3 +63,5 @@ secure with robust encryption. By following these steps, we create a
 readily available and well-structured resource for researchers,
 empowering them to analyze environmental data and contribute to a
 healthier Lombardy.
+
+## Health data

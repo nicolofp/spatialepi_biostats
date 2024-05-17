@@ -73,10 +73,18 @@ pfas = c("PFBA (Perfluoro Butanoic Acid)","PFBS (Perfluoro Butane Sulfonate)",
          "PFHxS (Perfluoro Hexane Sulfonate)","PFNA (Perfluoro Nonanoic Acid)",
          "PFOA (Perfluoro Octanoic Acid)","PFOS (Perfluoro Octane Sulfonate)",
          "PFPeA (Perfluoro Pentanoic Acid)","PFUdA (Perfluoro Undecanoic Acid)")
+pcbs = c("PCB 101","PCB 105","PCB 110","PCB 114","PCB 118","PCB 123","PCB 126",
+         "PCB 128","PCB 138","PCB 146","PCB 149","PCB 151","PCB 153","PCB 156",
+         "PCB 157","PCB 167","PCB 169","PCB 170","PCB 177","PCB 180","PCB 183",
+         "PCB 187","PCB 189","PCB 28","PCB 52","PCB 77","PCB 81","PCB 95","PCB 99")
 WC[, lat := unlist(WC$lat)]
 WC[, lng := unlist(WC$lng)]
 
-unique(WC[parametro %in% metals,.(lat,lng)])
+WC = map_point(district, WC, "district_id")
+WC[, valore_numerico := as.numeric(gsub(",",".",valore_numerico))]
 
+WC[parametro %in% metals,.N, by = .(parametro,segno)]
 
+View(WC[,.N,by = .(parametro,segno)][segno == ""])
+#DDT totale (DM 6 luglio 2016)
 
