@@ -9,7 +9,9 @@ output:
 ## Introduction
 
 ```{r}
-knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/')
+knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/',
+                      fig.align = 'center')
+
 library(data.table)
 library(geojsonio)
 library(ggplot2)
@@ -60,7 +62,7 @@ dt_district = merge(dt_district,WC, by.x = "id", by.y = "district_id")
 
 ```
 
-```{r,fig.align='center', fig.height=6, fig.height=6}
+```{r}
 map_lomb = ggplot() +
   geom_polygon(data = dt_district, aes(x = long, y = lat, 
                                           group = group, fill = valore_numerico), 

@@ -5,7 +5,9 @@ Friday, 17<sup>th</sup> May 2024
 ## Introduction
 
 ``` r
-knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/')
+knitr::opts_chunk$set(fig.path='../notebook/4_data_visualization_files/figure-gfm/',
+                      fig.align = 'center')
+
 library(data.table)
 library(geojsonio)
 library(ggplot2)
