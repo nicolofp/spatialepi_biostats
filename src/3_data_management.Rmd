@@ -28,6 +28,5 @@ APIs act as digital messengers, enabling us to programmatically retrieve and int
 
 To ensure smooth analysis and accessibility, we take a three-step approach: parsing, organizing, and storing the data in AWS S3. Parsing involves transforming the raw data into a consistent, user-friendly format. We then organize this data based on relevant factors like time, location, or pollutant type. Finally, we leverage Amazon Web Services' S3 storage.  S3 offers several advantages: it's highly scalable to accommodate future data growth, accessible from anywhere for collaborative research, cost-effective with a pay-as-you-go model, and secure with robust encryption.  By following these steps, we create a readily available and well-structured resource for researchers, empowering them to analyze environmental data and contribute to a healthier Lombardy.
 
-## Health data 
 
 

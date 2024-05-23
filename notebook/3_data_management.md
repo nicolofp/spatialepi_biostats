@@ -1,6 +1,6 @@
 Data Management
 ================
-Friday, 17<sup>th</sup> May 2024
+Thursday, 23<sup>rd</sup> May 2024
 
 ## Introduction
 
@@ -63,5 +63,3 @@ secure with robust encryption. By following these steps, we create a
 readily available and well-structured resource for researchers,
 empowering them to analyze environmental data and contribute to a
 healthier Lombardy.
-
-## Health data
