@@ -17,12 +17,11 @@ dt = merge(DTh, wq,
            all = T)
 dt$district_id = as.numeric(as.character(dt$district_id))
 dt = dt[, lapply(.SD, function(x) replace(x, is.na(x), median(x, na.rm = TRUE)))]
-dt[,':='(ratio_endo = 100*round(h_endo/h_all,2),
-         ratio_heart = 100*round(h_heart/h_all,2),
+dt[,':='(ratio_heart = 100*round(h_heart/h_all,2),
          ratio_lungs = 100*round(h_lungs/h_all,2),
-         Manganese_q = 10*ecdf(Manganese)(Manganese),
-         Piombo_q = 10*ecdf(Piombo)(Piombo),
-         Solfati_q = 10*ecdf(Solfati)(Solfati))]
+         Arsenico_q = 10*ecdf(Arsenico)(Arsenico),
+         Nichel_q = 10*ecdf(Nichel)(Nichel),
+         Piombo_q = 10*ecdf(Piombo)(Piombo))]
 
 check_cmdstan_toolchain(fix = TRUE)
 file = "stan/poisson_m/poisson_w.stan"
