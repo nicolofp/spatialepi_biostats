@@ -4,7 +4,6 @@ date: "`r weekdays(Sys.Date())`, `r as.numeric(format(Sys.Date(),'%d'))`^`r ifel
 output:
   github_document:
     html_preview: false
-always_allow_html: yes
 ---
 
 ```{r, include=FALSE}
@@ -172,7 +171,6 @@ fit = mod$sample(
 ```
 
 ```{r, include=FALSE}
-library(kableExtra)
 fit = readRDS("heart_MnPbSol.rds")
 ```
 
@@ -183,8 +181,6 @@ fit$summary(variables = c("we","Dalp","beta0","beta1"),
   quantiles = ~ quantile2(., probs = c(0.025, 0.975)),
   posterior::default_convergence_measures()) |> 
   mutate(variable = c("Manganese","Lead","Sulfates","Dw_Mn","Dw_Pb","DW_Sulf","Intercept","Slope")) |> 
-  mutate_if(is.numeric, round, 2) |> 
-  kbl(caption = "MCMC 4 chains - Sampling: 1000 - Warmup: 500 - Thinning: 1") |>
-  kable_classic(full_width = F, html_font = "Cambria")
+  mutate_if(is.numeric, round, 2)
 ```
 
