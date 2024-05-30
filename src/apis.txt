@@ -1,0 +1,18 @@
+# Check for api
+# water quality
+# tmp = fread("https://www.dati.lombardia.it/resource/beda-kb7b.csv?$limit=5000000")
+# unique(tmp$categoria_parametro)
+# aqw = fread("https://www.dati.lombardia.it/resource/9sn6-a9kr.csv?anno_referto=2019")
+# https://www.dati.lombardia.it/resource/9sn6-a9kr.json?anno_referto=2020
+# https://www.dati.lombardia.it/resource/46wy-4ydd.csv
+
+# Air quality
+# tmp0 = fread("https://www.dati.lombardia.it/resource/9xaz-9vbz.csv") # Stazioni
+# tmp1 = fread("https://www.dati.lombardia.it/resource/ib47-atvt.csv") # Sensori
+# tmp2 = fread("https://www.dati.lombardia.it/resource/ykhg-b8rs.csv?data=2023-01-23T01:00:00.000")
+# tmp3 = fread("https://www.dati.lombardia.it/resource/nicp-bhqi.csv?data=2020-01-23T01:00:00.000")
+
+# https://www.dati.lombardia.it/resource/g2hp-ar79.json - dal 2018 - https://www.dati.lombardia.it/Ambiente/Dati-sensori-aria-dal-2018/g2hp-ar79/about_data
+# https://www.dati.lombardia.it/resource/cthp-zqrr.json - 2000-2009
+# https://www.dati.lombardia.it/resource/nr8w-tj77.json - 2010-2017
+# aaa = fread("https://www.dati.lombardia.it/resource/g2hp-ar79.csv?data=2020-01-22T01:00:00.000")

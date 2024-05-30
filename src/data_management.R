@@ -70,3 +70,6 @@ tmp1 = unlist(strsplit(tmp1,split = "\\},"))
 tmp1 = gsub("\\{|\\[|\\]|\\}","",tmp1) 
 
 
+put_object(file = "C:/Users/nicol/Downloads/DISTRETTI/distretti.shp",
+           bucket = 'envbran/maps',
+           multipart = TRUE)

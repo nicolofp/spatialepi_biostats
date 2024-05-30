@@ -5,8 +5,7 @@ library(dplyr)
 library(sf)
 
 source("src/key_amazon.R")
-distretti = read_sf(dsn = paste0("C:/Users/nicol/Downloads/DISTRETTI/",
-                                 "geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp"))
+distretti = read_sf(dsn = "data/DISTRETTI/geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp")
 
 # Hospitalization data
 url_hospit = paste0("s3://envbran/maps/hospitalization.arrow")
