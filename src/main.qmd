@@ -1,0 +1,147 @@
+---
+title: "Spatial Bayesian Analysis of Air Pollution Health Effects"
+subtitle: "Leveraging Public Data to Understand Environmental Health Relationships"
+author: "Nicol&oacute; Foppa Pedretti"
+format: 
+  html:
+    fontsize: smaller
+    number-sections: true
+    embed-resources: true
+bibliography: reference_maps.bib
+csl: ieee.csl
+---
+
+## Introduction
+
+The traditional paradigm of public health research has primarily focused
+on analyzing individual-level clinical data to understand disease
+patterns and inform interventions. However, a burgeoning field –
+geospatial computational health – is transforming this landscape by
+integrating the power of geospatial analysis and computational modeling.
+This novel approach leverages the wealth of location-based data to
+explore the intricate interplay between place and health outcomes.
+
+Geospatial computational health draws upon a diverse toolkit, including
+Geographic Information Systems (GIS), spatial statistics, and machine
+learning algorithms. By incorporating environmental factors,
+sociodemographic data, and real-time disease surveillance information
+with a geographic lens, researchers can unveil crucial spatial patterns.
+This empowers them to:
+
+- **Identify disease clusters and hotspots:** By analyzing the spatial
+  distribution of health outcomes, researchers can pinpoint geographic
+  areas with higher disease prevalence. This information can guide
+  targeted public health interventions and resource allocation.
+- **Predict disease outbreaks:** Integrating disease incidence data with
+  environmental and mobility patterns allows for the development of
+  predictive models to anticipate potential outbreaks and mitigate their
+  impact.
+- **Investigate environmental exposures and health risks:** Geospatial
+  analysis can link environmental factors like air pollution or water
+  quality to specific health outcomes, enabling researchers to
+  understand the spatial distribution of health risks.
+
+The marriage of geospatial data with computational power holds immense
+potential for public health research. By delving deeper into the spatial
+context of health, geospatial computational health promises to
+revolutionize our understanding of disease etiology, improve public
+health interventions, and ultimately promote population health equity.
+
+## Data 
+
+```{r}
+library(data.table)
+library(geojsonsf)
+library(lubridate)
+library(geojsonio)
+library(gtExtras)
+library(ggiraph)
+library(ggplot2)
+library(viridis)
+library(duckdb)
+library(readxl)
+library(dplyr)
+library(arrow)
+library(broom)
+library(sp)
+library(sf)
+
+source("../src/spatial_library.R")
+source("../src/key_amazon.R")
+
+# Health district 
+district =  geojson_read("https://www.dati.lombardia.it/resource/9n45-7bpc.geojson",
+                         what = "sp")
+dt_district = tidy(district)
+dt_district = data.table(dt_district)
+dt_district = merge(dt_district,
+                    district@data[,c("objectid_1","codice_ats","distretto","descrizion")],
+                    by.x = "id", by.y = "objectid_1")
+dt_district$id = as.numeric(dt_district$id)
+
+# Create duckdb connection
+duckdb_con = DBI::dbConnect(duckdb::duckdb())
+
+DT = open_dataset("s3://envbran/WQ/WQ_underground.arrow",format = "arrow") 
+DT = DT |> to_duckdb(table_name = "test1",
+                     con = duckdb_con)
+
+WC = DT |>
+  filter(year(data_di_campionamento) == 2019) |>
+  as.data.table() 
+
+metals = c("Arsenico","Cadmio","Manganese","Mercurio","Piombo")
+pfas = c("PFBA (Perfluoro Butanoic Acid)","PFBS (Perfluoro Butane Sulfonate)",
+         "PFDA (Perfluoro Decanoic Acid)","PFDoA (Perfluoro Dodecanoic Acid)",
+         "PFHpA (Perfluoro Heptanoic Acid)","PFHxA (Perfluoro Hexanoic Acid)",
+         "PFHxS (Perfluoro Hexane Sulfonate)","PFNA (Perfluoro Nonanoic Acid)",
+         "PFOA (Perfluoro Octanoic Acid)","PFOS (Perfluoro Octane Sulfonate)",
+         "PFPeA (Perfluoro Pentanoic Acid)","PFUdA (Perfluoro Undecanoic Acid)")
+pcbs = c("PCB 101","PCB 105","PCB 110","PCB 114","PCB 118","PCB 123","PCB 126",
+         "PCB 128","PCB 138","PCB 146","PCB 149","PCB 151","PCB 153","PCB 156",
+         "PCB 157","PCB 167","PCB 169","PCB 170","PCB 177","PCB 180","PCB 183",
+         "PCB 187","PCB 189","PCB 28","PCB 52","PCB 77","PCB 81","PCB 95","PCB 99")
+WC[, lat := unlist(WC$lat)]
+WC[, lng := unlist(WC$lng)]
+
+WC = map_point(district, WC, "district_id")
+WC[, valore_numerico := as.numeric(gsub(",",".",valore_numerico))]
+
+WC[, valore_numerico := ifelse(segno == "<", 
+                               valore_numerico/sqrt(2), valore_numerico)]
+
+WC = WC[parametro %in% metals
+   ,.(valore_numerico = mean(valore_numerico,na.rm=T)), by = .(parametro,district_id)]
+
+wq = dcast(WC, district_id ~ parametro)
+
+ospedali = read_sf(dsn = "../data/DISTRETTI/geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp")
+ospedali = merge(ospedali,wq, by.x = "objectid_1", by.y = "district_id")
+ospedali$Mn_label = round(ospedali$Manganese,2)
+
+gg_plt <- ospedali |> 
+  ggplot(aes(geometry = geometry)) +
+  geom_sf(
+    #data = distretto,
+    aes(fill = Manganese),
+    color = 'white',
+    linewidth = 0.1
+  ) +
+  scale_fill_viridis() +
+  labs(fill = "Manganese (µg/l):") +
+  theme_void() +
+  theme()
+
+gg_plt
+```
+
+
+## Statistical modeling
+
+See [@MORRIS2019100301]
+
+## References
+
+::: {#refs}
+:::
+

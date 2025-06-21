@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 src/key_amazon.R
+*.md
