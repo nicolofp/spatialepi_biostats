@@ -11,3 +11,138 @@ author = {Mitzi Morris and Katherine Wheeler-Martin and Dan Simpson and Stephen 
 keywords = {Bayesian inference, Intrinsic conditional auto-regressive model, Besag-York-Mollié model, Probabilistic programming, Stan, Pedestrian injuries},
 abstract = {This report presents a new implementation of the Besag-York-Mollié (BYM) model in Stan, a probabilistic programming platform which does full Bayesian inference using Hamiltonian Monte Carlo (HMC). We review the spatial auto-correlation models used for areal data and disease risk mapping, and describe the corresponding Stan implementations. We also present a case study using Stan to fit a BYM model for motor vehicle crashes injuring school-age pedestrians in New York City from 2005 to 2014 localized to census tracts. Stan efficiently fit our multivariable BYM model having a large number of observations (n=2095 census tracts) with small outcome counts < 10 in the majority of tracts. Our findings reinforced that neighborhood income and social fragmentation are significant correlates of school-age pedestrian injuries. We also observed that nationally-available census tract estimates of commuting methods may serve as a useful indicator of underlying pedestrian densities.}
 }
+
+@misc{donegan_2021,
+ title={Building spatial conditional autoregressive (CAR) models in the Stan programming language},
+ url={osf.io/3ey65_v1},
+ DOI={10.31219/osf.io/3ey65},
+ publisher={OSF Preprints},
+ author={Donegan, Connor},
+ year={2021},
+ month={Sep}
+}
+
+@book{cressie2015statistics,
+  title={Statistics for spatial data},
+  author={Cressie, Noel},
+  year={2015},
+  publisher={John Wiley \& Sons}
+}
+
+@book{cressie2011statistics,
+  title={Statistics for spatio-temporal data},
+  author={Cressie, Noel and Wikle, Christopher K},
+  year={2011},
+  publisher={John Wiley \& Sons}
+}
+
+@book{haining2020modelling,
+  title={Modelling Spatial and Spatial-Temporal Data: A Bayesian Approach: A Bayesian Approach},
+  author={Haining, Robert P and Li, Guangquan},
+  year={2020},
+  publisher={CRC Press}
+}
+
+@article{0abfb364-d2b0-3c36-bea9-11d72a38fbef,
+ ISSN = {00359246},
+ URL = {http://www.jstor.org/stable/2984812},
+ abstract = {The formulation of conditional probability models for finite systems of spatially interacting random variables is examined. A simple alternative proof of the Hammersley-Clifford theorem is presented and the theorem is then used to construct specific spatial schemes on and off the lattice. Particular emphasis is placed upon practical applications of the models in plant ecology when the variates are binary or Gaussian. Some aspects of infinite lattice Gaussian processes are discussed. Methods of statistical analysis for lattice schemes are proposed, including a very flexible coding technique. The methods are illustrated by two numerical examples. It is maintained throughout that the conditional probability approach to the specification and analysis of spatial interaction is more attractive than the alternative joint probability approach.},
+ author = {Julian Besag},
+ journal = {Journal of the Royal Statistical Society. Series B (Methodological)},
+ number = {2},
+ pages = {192--236},
+ publisher = {[Royal Statistical Society, Oxford University Press]},
+ title = {Spatial Interaction and the Statistical Analysis of Lattice Systems},
+ urldate = {2025-06-24},
+ volume = {36},
+ year = {1974}
+}
+
+@article{1b92594e-405c-3467-ac93-fc79c32fb6d9,
+ ISSN = {0006341X, 15410420},
+ URL = {http://www.jstor.org/stable/3695906},
+ abstract = {In the fields of medicine and public health, a common application of areal data models is the study of geographical patterns of disease. When we have several measurements recorded at each spatial location (for example, information on p ≥ 2 diseases from the same population groups or regions), we need to consider multivariate areal data models in order to handle the dependence among the multivariate components as well as the spatial dependence between sites. In this article, we propose a flexible new class of generalized multivariate conditionally autoregressive (GMCAR) models for areal data, and show how it enriches the MCAR class. Our approach differs from earlier ones in that it directly specifies the joint distribution for a multivariate Markov random field (MRF) through the specification of simpler conditional and marginal models. This in turn leads to a significant reduction in the computational burden in hierarchical spatial random effect modeling, where posterior summaries are computed using Markov chain Monte Carlo (MCMC). We compare our approach with existing MCAR models in the literature via simulation, using average mean square error (AMSE) and a convenient hierarchical model selection criterion, the deviance information criterion (DIC; Spiegelhalter et al., 2002, Journal of the Royal Statistical Society, Series B 64, 583-639). Finally, we offer a real-data application of our proposed GMCAR approach that models lung and esophagus cancer death rates during 1991-1998 in Minnesota counties.},
+ author = {Xiaoping Jin and Bradley P. Carlin and Sudipto Banerjee},
+ journal = {Biometrics},
+ number = {4},
+ pages = {950--961},
+ publisher = {[Wiley, International Biometric Society]},
+ title = {Generalized Hierarchical Multivariate CAR Models for Areal Data},
+ urldate = {2025-06-24},
+ volume = {61},
+ year = {2005}
+}
+
+@article{10.1093/biostatistics/4.1.11,
+    author = {Gelfand, Alan E. and Vounatsou, Penelope},
+    title = {Proper multivariate conditional autoregressive models for spatial data analysis},
+    journal = {Biostatistics},
+    volume = {4},
+    number = {1},
+    pages = {11-15},
+    year = {2003},
+    month = {01},
+    abstract = {In the past decade conditional autoregressive modelling specifications have found considerable application for the analysis of spatial data. Nearly all of this work is done in the univariate case and employs an improper specification. Our contribution here is to move to multivariate conditional autoregressive models and to provide rich, flexible classes which yield proper distributions. Our approach is to introduce spatial autoregression parameters. We first clarify what classes can be developed from the family of Mardia (1988) and contrast with recent work of Kim et al. (2000). We then present a novel parametric linear transformation which provides an extension with attractive interpretation. We propose to employ these models as specifications for second‐stage spatial effects in hierarchical models. Two applications are discussed; one for the two‐dimensional case modelling spatial patterns of child growth, the other for a four‐dimensional situation modelling spatial variation in HLA‐B allele frequencies. In each case, full Bayesian inference is carried out using Markov chain Monte Carlo simulation.},
+    issn = {1465-4644},
+    doi = {10.1093/biostatistics/4.1.11},
+    url = {https://doi.org/10.1093/biostatistics/4.1.11},
+    eprint = {https://academic.oup.com/biostatistics/article-pdf/4/1/11/680144/040011.pdf},
+}
+
+@Article{Besag1991,
+author={Besag, Julian
+and York, Jeremy
+and Molli{\'e}, Annie},
+title={Bayesian image restoration, with two applications in spatial statistics},
+journal={Annals of the Institute of Statistical Mathematics},
+year={1991},
+month={Mar},
+day={01},
+volume={43},
+number={1},
+pages={1-20},
+abstract={There has been much recent interest in Bayesian image analysis, including such topics as removal of blur and noise, detection of object boundaries, classification of textures, and reconstruction of two- or three-dimensional scenes from noisy lower-dimensional views. Perhaps the most straightforward task is that of image restoration, though it is often suggested that this is an area of relatively minor practical importance. The present paper argues the contrary, since many problems in the analysis of spatial data can be interpreted as problems of image restoration. Furthermore, the amounts of data involved allow routine use of computer intensive methods, such as the Gibbs sampler, that are not yet practicable for conventional images. Two examples are given, one in archeology, the other in epidemiology. These are preceded by a partial review of pixel-based Bayesian image analysis.},
+issn={1572-9052},
+doi={10.1007/BF00116466},
+url={https://doi.org/10.1007/BF00116466}
+}
+
+@misc{mcstanExactSparse,
+	author = {Max Joseph},
+	title = {{E}xact sparse {C}{A}{R} models in {S}tan --- mc-stan.org},
+	howpublished = {\url{https://mc-stan.org/learn-stan/case-studies/mbjoseph-CARStan.html}},
+	year = {},
+	note = {[Accessed 24-06-2025]},
+}
+
+@misc{rpubsRPubsSTAN,
+	author = {},
+	title = {{R}{P}ubs - {S}{V}{R} via {S}{T}{A}{N} --- rpubs.com},
+	howpublished = {\url{https://rpubs.com/chrisbrunsdon/503833}},
+	year = {},
+	note = {[Accessed 24-06-2025]},
+}
+
+@misc{mcstanSpatialModels,
+	author = {Mitzi Morris},
+	title = {{S}patial {M}odels in {S}tan: {I}ntrinsic {A}uto-{R}egressive {M}odels for {A}real {D}ata --- mc-stan.org},
+	howpublished = {\url{https://mc-stan.org/learn-stan/case-studies/icar_stan.html}},
+	year = {},
+	note = {[Accessed 24-06-2025]},
+}
+
+@misc{connordoneganConditionalAutoregressive,
+	author = {},
+	title = {{C}onditional autoregressive ({C}{A}{R}) models — stan\_car --- connordonegan.github.io},
+	howpublished = {\url{https://connordonegan.github.io/geostan/reference/stan_car.html}},
+	year = {},
+	note = {[Accessed 24-06-2025]},
+}
+
+@misc{aheblogGeostatisticalModelling,
+	author = {},
+	title = {{G}eostatistical modelling with {R} and {S}tan - {T}he {A}cademic {H}ealth {E}conomists' {B}log --- aheblog.com},
+	howpublished = {\url{https://aheblog.com/2016/12/07/geostatistical-modelling-with-r-and-stan/}},
+	year = {},
+	note = {[Accessed 24-06-2025]},
+}

@@ -116,8 +116,10 @@ WC = WC[parametro %in% metals
 wq = dcast(WC, district_id ~ parametro)
 
 ospedali = read_sf(dsn = "../data/DISTRETTI/geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp")
-ospedali = merge(ospedali,wq, by.x = "objectid_1", by.y = "district_id")
-ospedali$Mn_label = round(ospedali$Manganese,2)
+ospedali = merge(ospedali,wq, by.x = "objectid_1", by.y = "district_id", all.x = T)
+ospedali$Manganese = ifelse(is.na(ospedali$Manganese),
+                            median(ospedali$Manganese,na.rm=T),
+                            ospedali$Manganese)
 
 gg_plt <- ospedali |> 
   ggplot(aes(geometry = geometry)) +
