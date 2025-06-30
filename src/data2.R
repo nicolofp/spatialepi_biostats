@@ -72,6 +72,8 @@ pol_mean = valori[year(Data) == 2019 & idSensore %in% stazioni_r$idsensore &
 stazioni_r = merge(stazioni_r,pol_mean, by.x = c("idsensore"), by.y = c("idSensore"))
 cor(dcast(stazioni_r, idstazione ~ nometiposensore, value.var = "Valore")[,-1,with=F],use = "pairwise.complete.obs")
 
+
+
 # Hospitalization
 # maps/hospitalization.arrow
 # maps/hospital_geo.arrow
