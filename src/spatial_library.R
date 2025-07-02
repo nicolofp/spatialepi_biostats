@@ -28,3 +28,30 @@ outersect = function(x, y, ...) {
   duplicates = big_vec[duplicated(big_vec)]
   setdiff(big_vec, unique(duplicates))
 }
+
+# Given n coordinate points check if the 
+# points are within 2*r (in Km)
+#
+# Parameters
+# points  : data.frame (or data.table) with "lat" and "lng" columns
+# r       : max distance between points (2 at the times)
+
+library(geosphere)
+n_points_in_circle <- function(points, r) {
+  # Input: points is a matrix or data frame with columns (longitude, latitude)
+  n <- nrow(points)
+  if (n < 2) {
+    return(TRUE)  # Trivially true for 0 or 1 point
+  }
+  
+  # Compute pairwise distance matrix using distm (in meters, convert to km)
+  dist_matrix <- distm(points[, c(2, 1)], fun = distVincentyEllipsoid) / 1000
+  
+  # Find maximum pairwise distance (excluding diagonal)
+  max_dist <- max(dist_matrix[upper.tri(dist_matrix)])
+  
+  # Check if maximum distance is at most 2 * r
+  return(max_dist <= r)
+}
+
+

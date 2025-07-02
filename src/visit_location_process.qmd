@@ -1,0 +1,217 @@
+---
+title: "Detect geographical locations"
+subtitle: "Fuzzy mapping between names and locations"
+author: "Nicol&oacute; Foppa Pedretti"
+format: 
+  html:
+    fontsize: smaller
+    number-sections: true
+    embed-resources: true
+bibliography: reference_maps.bib
+csl: ieee.csl
+---
+
+## Introduction
+
+This analysis combines two datasets: one containing visit records and another with geographical information for visit sites. While both datasets include site names that can serve as matching keys, these names are not always identical between the two sources. Variations in spelling, abbreviation, or formatting create challenges that require careful data preprocessing and matching techniques to successfully link visit records with their corresponding geographic locations. Once integrated, these datasets will enable spatial analysis of visit patterns and geographic trends.
+
+
+## Load data
+
+Load libraries and file for data processing
+
+```{r}
+#| warning: false
+#| message: false
+
+library(data.table)
+library(ggplot2)
+library(duckdb)
+library(dplyr)
+library(arrow)
+library(broom)
+library(tidyr)
+library(furrr)
+library(purrr)
+library(sp)
+library(sf)
+
+source("spatial_library.R")
+```
+
+Data from the geographical locations are stored in `Strutture_sanitarie.shp` while for the visits summary we use **Regione Lombardia** API data:
+
+```{r}
+#| warning: false
+#| message: false
+
+strutture = read_sf(dsn = "../data/REGIONE_LOMBARDIA/Strutture_sanitarie.shp")
+spec_erogatore = read_feather("s3://envbran/maps/Specialistica_per_Erogatore.arrow")
+```
+
+For our analysis we are interested only in visit happened in 2019 that are relative to respiratory functions. We also add a `ID_erogatore` for convenience:
+
+```{r}
+erogatore_location = spec_erogatore |>
+  rename_with(tolower) |>
+  filter(desc_fare_liv_1 == "VISITE" & 
+           anno == 2019 & 
+           desc_branca == "PNEUMOLOGIA") |>
+  select(desc_struttura_erogazione,desc_ats_erogazione,desc_ente) |>
+  distinct() |>
+  mutate(ID_erogatore = row_number())
+
+strutture_red = strutture |>
+  select(NOME_STRUT,DS_ATS,DS_ASST,COMUNE,PROV,LAT,LONG_) |>
+  mutate(ID_struttura = row_number()) |>
+  st_drop_geometry() |>
+  as.data.frame()
+```
+
+## Mapping 
+
+We start combining the names and ATS between the two datasets and then we have three steps:
+
+1. Save the location that are univocally determined
+2. Save the location that have multiple geographical coordinates within 10km  
+3. Manual mapping the other locations
+
+```{r}
+#| warning: false
+#| message: false
+
+# Set up parallel processing
+plan(multisession, workers = availableCores() - 1)  # Use all cores except one
+
+result_exact <- future_map_dfr(seq_along(erogatore_location$desc_struttura_erogazione), function(i) {
+  strutture_red |>
+    filter(grepl(erogatore_location$desc_struttura_erogazione[i], 
+                 NOME_STRUT, ignore.case = TRUE) &
+             DS_ATS == erogatore_location$desc_ats_erogazione[i]) |>
+    mutate(original = erogatore_location$desc_struttura_erogazione[i],
+           ID_erogatore = erogatore_location$ID_erogatore[i])
+}, .options = furrr_options(seed = TRUE))
+
+test1 <- future_map_dfr(unique(result_exact$original), function(i) {
+  result_exact |>
+    filter(original == i) |>
+    mutate(check = n_points_in_circle(cbind(LAT,LONG_),5))
+}, .options = furrr_options(seed = TRUE))
+```
+
+For location with more than 1 match within 10km we randomly select one of the location because we only want the distict.
+
+```{r}
+#| warning: false
+#| message: false
+
+test1 <- test1 |> add_count(original)
+test1 <- test1 |> group_by(original) |> mutate(ID_group = row_number()) |> ungroup()
+#test1 |> View()
+#test1 |> filter(check == T & n == 1) |> select(original) |> distinct() #121 unique 
+#test1 |> filter(check == T & n > 1) |> select(original) |> distinct() #19 unique 
+test1 |> filter(check == T & n == 1) |> write.csv("../data/mapped_auto1.csv", row.names = F)
+test1 |> filter(check == T & n > 1 & ID_group == 1) |> write.csv("../data/mapped_auto2.csv",
+                                                                 row.names = F)
+```
+
+Load the results both automatic and manually mapped (We will still miss around 10 locations which are unidentfiable)
+
+```{r}
+#| warning: false
+#| message: false
+
+file_list <- c("../data/mapped_auto1.csv", 
+               "../data/mapped_auto2.csv")
+mapped_auto <- rbindlist(lapply(file_list, fread))
+
+mapped_manual = fread("../data/erogatore_location2.csv")
+mapped_manual = mapped_manual |>
+  filter(!is.na(LAT)) |> 
+  rename("original" = "desc_struttura_erogazione")
+mapped = bind_rows(mapped_auto,mapped_manual)
+```
+
+Create final dataset with locations
+
+```{r}
+#| warning: false
+#| message: false
+
+final_test = spec_erogatore |>
+  rename_with(tolower) |>
+  filter(desc_fare_liv_1 == "VISITE" & anno == 2019 & desc_branca == "PNEUMOLOGIA") |>
+  inner_join(mapped |> select(original,LAT,LONG_) |> distinct(), 
+             by = c("desc_struttura_erogazione" = "original")) 
+```
+
+Combine by geographical location the ratio of the visits which are required to be urgent (visit to be done within 10 days)
+
+```{r}
+#| warning: false
+#| message: false
+#| eval: false
+
+final_test = final_test |> 
+  select(desc_struttura_erogazione,qta_tot,cod_classe_priorita,LAT,LONG_) |>
+  dplyr::group_by(cod_classe_priorita,LAT,LONG_) |>
+  summarise(qta_visit = sum(qta_tot)) |>
+  ungroup() |>
+  mutate(cod_classe_priorita = ifelse(cod_classe_priorita == "","N",
+                                      cod_classe_priorita)) |>
+  pivot_wider(names_from = cod_classe_priorita,
+              values_from = qta_visit) |> 
+  mutate(across(where(is.numeric), ~replace_na(.x, 0))) |>
+  mutate(u_ratio = (U+B)/(N+B+P+U)) |> 
+  write_feather("../data/pulmonary_visits.arrow")
+```
+
+Let's visualize the results
+
+```{r}
+#| warning: false
+#| message: false
+#| fig-align: center
+#| fig-width: 6
+#| fig-height: 3
+
+distretti = read_sf(dsn = "../data/DISTRETTI/geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp")
+
+final_test <- read_feather("../data/pulmonary_visits.arrow")
+final_test <- st_as_sf(final_test,coords = c("LONG_", "LAT"), 
+                      crs = 4326)
+
+gg_plt <- ggplot() +
+  geom_sf(data = distretti,
+    aes(geometry = geometry),
+    fill = 'white',
+    color = 'black',
+    linewidth = 0.1
+  ) +
+  geom_sf(data = final_test,
+    aes(geometry = geometry),
+    color = 'red',
+  ) +
+  theme_void() +
+  ggtitle("Locations of visits") + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+
+hist_test = final_test |> ggplot(aes(x = u_ratio)) +
+  geom_histogram(color="#e9ecef", alpha=0.6, fill = "#404080") +
+  theme_bw() +
+  ggtitle("Ratio of urgent visits") + 
+  xlab("") + ylab("") +
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+
+gridExtra::grid.arrange(gg_plt,hist_test, ncol = 2)
+
+```
+
+## Additional info
+
+See [@MORRIS2019100301]
+
+## References
+
+::: {#refs}
+:::
