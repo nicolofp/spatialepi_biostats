@@ -66,8 +66,9 @@ DT_stazioni_valori_2019 |>
               values_from = "Valore") |> View()
 
 ####################################################################################
-X = fread("C:/Users/nicol/Downloads/Dati_Stime_Comunali_2017___2020_20250702.csv")
-Y = fread("C:/Users/nicol/Downloads/Anagrafica_stime_comunali_20250702.csv")
+get_bucket('envbran')
+X = read_feather("s3://envbran/AQ/Anagrafica_stime_comunali.arrow")
+Y = read_feather("s3://envbran/AQ/Dati_stime_comunali.arrow")
 
 X_red = X |>
   mutate(Data = as.Date(Data, format = "%m/%d/%Y %H:%M:%S"),
