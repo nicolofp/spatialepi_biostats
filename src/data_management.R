@@ -4,7 +4,7 @@ library(dplyr)
 library(arrow)
 library(sf)
 
-source("src/key_amazon.R")
+stopifnot(nzchar(Sys.getenv("AWS_ACCESS_KEY_ID")))  # AWS credentials + region now come from ~/.Renviron (was: source key_amazon.R)
 get_bucket("envbran")
 
 # List of municipalities

@@ -4,7 +4,7 @@ library(arrow)
 library(dplyr)
 library(sf)
 
-source("src/key_amazon.R")
+stopifnot(nzchar(Sys.getenv("AWS_ACCESS_KEY_ID")))  # AWS credentials + region now come from ~/.Renviron (was: source key_amazon.R)
 distretti = read_sf(dsn = "data/DISTRETTI/geo_export_1aed6579-bb7e-4f89-a616-cc0af5ebb0f1.shp")
 
 # Hospitalization data

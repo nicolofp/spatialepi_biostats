@@ -12,7 +12,7 @@ library(sp)
 library(sf)
 
 source("src/spatial_library.R")
-source("src/key_amazon.R")
+stopifnot(nzchar(Sys.getenv("AWS_ACCESS_KEY_ID")))  # AWS credentials + region now come from ~/.Renviron (was: source key_amazon.R)
 
 # Health district 
 district =  geojson_read("https://www.dati.lombardia.it/resource/9n45-7bpc.geojson",
