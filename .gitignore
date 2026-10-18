@@ -4,3 +4,6 @@
 .Ruserdata
 src/key_amazon.R
 *.md
+src/socrata_api.txt
+data/ 
+*.rds
