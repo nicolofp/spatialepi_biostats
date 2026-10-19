@@ -7,3 +7,7 @@ src/key_amazon.R
 src/socrata_api.txt
 data/ 
 *.rds
+
+# Rendered HTML output (Quarto/R Markdown)
+*.html
+*_files/
